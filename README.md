@@ -10,4 +10,6 @@ One example for December 19th
 
 The code also includes a Twitter bot which (I hope) will tweet one of the solutions for each day at 7am UTC, mostly following [this tutorial from Miguel Garcia](https://realpython.com/twitter-bot-python-tweepy/) using [Tweepy](https://github.com/tweepy/tweepy)
 
-Link to the Twitter account of the [Calender Puzzle Bot](https://twitter.com/CalendarPuzzle). The intention is to run a scheduled task using the free tier of [pythonanywhere](https://eu.pythonanywhere.com/)
+Link to the Twitter account of the [@CalendarPuzzle](https://twitter.com/CalendarPuzzle). The intention is to run a scheduled task using the free tier of [pythonanywhere](https://eu.pythonanywhere.com/)
+
+![@CalendarPuzzle Twitter Account](https://github.com/jccabrejas/Calendar_Puzzle/blob/79ffe50d28f2ffc2ee6ffa24a5dfc7328e46e976/images/CalendarPuzzleTwitter.png)
