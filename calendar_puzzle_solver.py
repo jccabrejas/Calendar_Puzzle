@@ -219,7 +219,7 @@ def still_possible(available_instances):
 
 
 def place_next_piece(original, cells_not_allowed, solutions, letter):
-
+    '''TODO: docstring missing'''
     used_pieces = "".join(["".join(list(solutions[-1].keys()))])
     if used_pieces not in "ABCDEFGH":
         return "go back", solutions
