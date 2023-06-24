@@ -1,3 +1,4 @@
+import argparse
 import configparser
 import datetime
 import os
@@ -139,7 +140,8 @@ def post_tweet(month, day, message, suffix):
     try:
         api.verify_credentials()
         print("Authentication OK")
-    except:
+    except Exception as err:
+        print(f"Unexpected {err=}, {type(err)=}")
         print("Error during authentication")
         sys.exit()
 
@@ -147,20 +149,41 @@ def post_tweet(month, day, message, suffix):
     filename = f'{month}/{day}/{month}-{day}_{suffix}.png'
     media = api.media_upload(filename)
     sleep(30)
-    api.update_status(message, media_ids = [media.media_id])
-
+ 
+    # https://stackoverflow.com/questions/70129448/how-to-create-tweet-using-tweepy-api-v-2/76509550#76509550
+    newapi = tweepy.Client(
+        consumer_key=bot_key,
+        consumer_secret=bot_secret,
+        access_token=token,
+        access_token_secret=token_secret)
+    newapi.create_tweet(text = message, media_ids = [media.media_id])
     return None
 
 def main():
+    parser = argparse.ArgumentParser()
+    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    parser.add_argument("--month", help=str(months),
+        choices=months, type=str)
+    parser.add_argument("--day", help="1, 2, ..., 31",
+        choices=list(range(1,32)), type=int)
+    args = parser.parse_args()
     solutions = read_data("calendar_solution_dict.pickle")
 
     mydate = datetime.datetime.now()
     month = mydate.strftime("%b")
     day = mydate.strftime("%d").zfill(2)
+
+    if args.month and args.day:
+        month = args.month
+        day = str(args.day).zfill(2)
+
     label = f'{month}-{day}'
-    suffix = '1_of_'+ str(len(solutions[label]))
-    message = '1 of ' + str(len(solutions[label])) + ' solutions. Feel free to reply with your own solution!'
-    sol = solutions[label][0]
+    n = len(solutions[label])
+    r = random.randrange(0,n)
+    sol = solutions[label][r]
+    suffix = f'{r}_of_'+ str(len(solutions[label]))
+    message = f'#{r} of ' + str(len(solutions[label])) + ' solutions. Feel free tto reply with your own solution! #apuzzleaday'
 
     text_conversion = get_text_conversion()
     contours = get_contours(text_conversion, month, day)
